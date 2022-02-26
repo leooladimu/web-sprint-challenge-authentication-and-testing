@@ -7,26 +7,26 @@ const {
 } = require("./auth-middleware");
 const { BCRYPT_ROUNDS } = require("../../config");
 const Users = require("../../users/users-model");
-const { tokenBuilder } = require("./auth-helpers");
+const { tokenBuilder } = require("./auth-helpers")
 
 router.post(
   "/register",
   validateRequestBody,
   checkUsernameAvailable,
   async (req, res, next) => {
-    let user = req.body;
-    const hash = bcrypt.hashSync(user.password, BCRYPT_ROUNDS);
+    let user = req.body
+    const hash = bcrypt.hashSync(user.password, BCRYPT_ROUNDS)
 
-    user.password = hash;
+    user.password = hash
 
     try {
-      const newUser = await Users.add(user);
-      res.status(201).json(newUser);
+      const newUser = await Users.add(user)
+      res.status(201).json(newUser)
     } catch (err) {
-      next(err);
+      next(err)
     }
   }
-);
+)
 
 router.post(
   "/login",
@@ -34,13 +34,13 @@ router.post(
   checkUsernameExists,
   (req, res, next) => {
     if (bcrypt.compareSync(req.body.password, req.userFromDb.password)) {
-      const token = tokenBuilder(req.userFromDb);
+      const token = tokenBuilder(req.userFromDb)
 
-      res.status(200).json({ message: `welcome, ${req.body.username}`, token });
+      res.status(200).json({ message: `welcome, ${req.body.username}`, token })
     } else {
-      next({ status: 401, message: "invalid credentials" });
+      next({ status: 401, message: "invalid credentials" })
     }
   }
-);
+)
 
-module.exports = router;
+module.exports = router
