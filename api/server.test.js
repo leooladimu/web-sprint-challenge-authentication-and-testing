@@ -20,11 +20,11 @@ afterAll(async () => {
   await db.destroy();
 });
 
-test("sanity", () => {
-  expect(true).not.toBe(false);
+test("that true is true", () => {
+  expect(true).toBe(true);
 });
 
-test("correct env?", () => {
+test("whether the env is what, a string?", () => {
   expect(process.env.NODE_ENV).toBe("testing");
 });
 
